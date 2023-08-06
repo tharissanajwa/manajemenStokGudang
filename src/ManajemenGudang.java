@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ManajemenGudang {
+    // Fungsi untuk menambahkan data barang baru ke dalam ArrayList
     public static ArrayList<String> tambahBarang (String kategori, String namaBarang, String stok) {
         ArrayList<String> barang = new ArrayList<>();
         barang.add(kategori);
@@ -12,10 +13,10 @@ public class ManajemenGudang {
     }
 
     public static void main() {
-
+        // Inisialisasi struktur data untuk menyimpan informasi gudang
         List<List<List<String>>> gudang = new ArrayList<>();
 
-        // Membuat Data Sample
+        // Membuat data sample
         gudang.add(new ArrayList<>());
         gudang.get(0).add(tambahBarang("Pakaian", "Baju Tidur", "15"));
         gudang.get(0).add(tambahBarang("Pakaian", "Jaket Palka", "25"));
@@ -24,17 +25,19 @@ public class ManajemenGudang {
         gudang.get(1).add(tambahBarang("Makanan", "Nasi Merah", "20"));
         gudang.get(1).add(tambahBarang("Makanan", "Donat Aceh", "50"));
 
-        // Welcome Output
+        // Menampilkan pesan selamat datang
         System.out.println("Selamat Datang di Manajemen Gudang Tharissa!");
 
-        // Menyimpan Variabel Data
+        // Looping menu utama
         boolean loopingMenu = true;
         Scanner scanner = new Scanner(System.in);
         while (loopingMenu) {
+            // Menampilkan menu pilihan kepada pengguna
             tampilkanMenu();
             int pilihanUser = getPilihanUser(scanner);
 
             switch (pilihanUser) {
+                // Menggunakan switch-case untuk menangani pilihan pengguna
                 case 1:
                     tambahBarangBaru(scanner, gudang);
                     break;
@@ -47,16 +50,19 @@ public class ManajemenGudang {
                 case 4:
                     lihatStokBarang(gudang);
                     break;
+                // Keluar dari program
                 case 0:
                     System.out.println("Anda memilih untuk keluar dari program.");
                     System.out.println("Terimakasih atas waktunya.");
                     System.out.println("=====================================================================================");
                     loopingMenu = false;
                     break;
+                // Menampilkan pesan kesalahan untuk input yang tidak valid semisalnya huruf/simbol
                 case -1:
                     System.out.println("Maaf! Input pilihan user harus berupa angka! Untuk mencoba lagi, silahkan tekan enter.");
                     scanner.nextLine();
                     break;
+                // Menampilkan pesan kesalahan untuk pilihan yang tidak valid misal angka 5 keatas
                 default:
                     System.out.println("Maaf menu, tidak tersedia, silahkan tekan enter untuk mencoba lagi.");
                     scanner.nextLine();
@@ -66,7 +72,9 @@ public class ManajemenGudang {
         scanner.close();
     }
 
+    // Fungsi untuk menampilkan menu kepada pengguna
     private static void tampilkanMenu() {
+        // Menampilkan menu pilihan yang tersedia
         System.out.println("=====================================================================================");
         System.out.println("Berikut adalah beberapa menu tindakan yang tersedia, silahkan pilih sesuai nomor.");
         System.out.println("1. Tambah data barang baru");
@@ -78,7 +86,9 @@ public class ManajemenGudang {
         System.out.print("Pilihan Anda (0-4) : ");
     }
 
+    // Fungsi untuk mendapatkan pilihan user
     private static int getPilihanUser(Scanner scanner) {
+        // Mengambil input pilihan user dan mengembalikan nilainya jika benar/terjadi kesalahan input data
         int pilihanUser;
         if (scanner.hasNextInt()) {
             pilihanUser = scanner.nextInt();
@@ -90,12 +100,14 @@ public class ManajemenGudang {
         return pilihanUser;
     }
 
+    // Fungsi untuk menambahkan barang baru ke dalam gudang
     private static void tambahBarangBaru(Scanner scanner, List<List<List<String>>> gudang) {
+        // Logika untuk menambahkan barang baru ke dalam gudang
         System.out.println("Anda memilih menu untuk menambahkan barang baru.");
         System.out.print("Silahkan inputkan kategori barang yang diinginkan : ");
         String kategoriBaru = scanner.nextLine();
 
-        // cek kategori ada atau tidak
+        // Cek kategori ada atau tidak
         int categoryIndex = -1;
         boolean categoryExists = false;
         for (int indeksKategori = 0; indeksKategori < gudang.size(); indeksKategori++) {
@@ -107,19 +119,18 @@ public class ManajemenGudang {
             }
         }
 
-        if (!categoryExists) {
-            gudang.add(new ArrayList<>());
-            categoryIndex = gudang.size() - 1;
-        }
-
         System.out.print("Silahkan inputkan nama barang yang diinginkan : ");
         String tambahNamaBarang = scanner.nextLine();
         System.out.print("Silahkan inputkan stok barang yang diinginkan : ");
         String addStokBarang = scanner.nextLine();
         if (addStokBarang.matches("^[0-9]+$")) {
+            if (!categoryExists) {
+                gudang.add(new ArrayList<>());
+                categoryIndex = gudang.size() - 1;
+            }
             int tambahStokBarang = Integer.parseInt(addStokBarang);
             if (tambahStokBarang > 0) {
-                // cek bila barang sudah ada
+                // Cek bila barang sudah ada
                 boolean itemExists = false;
                 for (int indeksKategori = 0; indeksKategori < gudang.size(); indeksKategori++) {
                     for (int indeksBarang = 0; indeksBarang < gudang.get(indeksKategori).size(); indeksBarang++) {
@@ -157,11 +168,14 @@ public class ManajemenGudang {
         }
     }
 
+    // Fungsi untuk mengurangi stok barang
     private static void penguranganStokBarang(Scanner scanner, List<List<List<String>>> gudang) {
+        // Logika untuk mengurangi stok barang dalam gudang
         System.out.println("Anda memilih menu untuk mengurangi stok barang.");
         System.out.print("Silahkan inputkan kategori barang yang ingin dirubah : ");
         String kategoriBaru = scanner.nextLine();
 
+        // Mengecek ada tidaknya kategori sesuai dengan inputan user
         boolean categoryExists = false;
         for (int indeksKategori = 0; indeksKategori < gudang.size(); indeksKategori++) {
                 String namaKategori = gudang.get(indeksKategori).get(0).get(0);
@@ -174,7 +188,7 @@ public class ManajemenGudang {
             System.out.print("Silahkan inputkan nama barang yang diinginkan : ");
             String tambahNamaBarang = scanner.nextLine();
 
-            // cek bila barang sudah ada
+            // Cek bila barang sudah ada
             boolean itemExists = false;
             for (int indeksKategori = 0; indeksKategori < gudang.size(); indeksKategori++) {
                 for (int indeksBarang = 0; indeksBarang < gudang.get(indeksKategori).size(); indeksBarang++) {
@@ -230,7 +244,9 @@ public class ManajemenGudang {
         }
     }
 
+    // Fungsi untuk menambahkan stok barang
     private static void penambahanStokBarang(Scanner scanner, List<List<List<String>>> gudang) {
+        // Logika untuk menambahkan stok barang dalam gudang
         System.out.println("Anda memilih menu untuk menambahkan stok barang.");
         System.out.print("Silahkan inputkan kategori barang yang ingin dirubah : ");
         String kategoriBaru = scanner.nextLine();
@@ -248,7 +264,7 @@ public class ManajemenGudang {
             System.out.print("Silahkan inputkan nama barang yang diinginkan : ");
             String tambahNamaBarang = scanner.nextLine();
 
-            // cek bila barang sudah ada
+            // Cek bila barang sudah ada
             boolean itemExists = false;
             for (int indeksKategori = 0; indeksKategori < gudang.size(); indeksKategori++) {
                 for (int indeksBarang = 0; indeksBarang < gudang.get(indeksKategori).size(); indeksBarang++) {
@@ -302,7 +318,9 @@ public class ManajemenGudang {
 
     }
 
+    // Fungsi untuk melihat stok barang yang tersedia
     private static void lihatStokBarang(List<List<List<String>>> gudang) {
+        // Menampilkan stok barang yang ada dalam gudang
         System.out.println("Anda memilih menu untuk melihat barang yang tersedia.");
         for (int indeksKategori = 0; indeksKategori < gudang.size(); indeksKategori++) {
             String namaKategori = gudang.get(indeksKategori).get(0).get(0);
